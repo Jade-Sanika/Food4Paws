@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* Navbar styles */
+        .navbar {
+            background-color: #884A39; /* Theme color */
+            overflow: hidden;
+            margin-bottom: 20px; /* Add space between navbar and content */
+        }
+        
+        .navbar a {
+            float: left;
+            display: block;
+            color: #fff; /* Text color */
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        .navbar a:hover {
+            background-color: #C38154; /* Darker color on hover */
+        }
+
+        /* Feeder box styles */
+        .feeders-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .feeder-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feeder-box h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .feeder-box p {
+            color: #555;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="/home">Home</a>
+  <a href="/messages">Messages</a>
+  <a href="/map">Map</a>
+  <a href="/profile">Profile</a>
+  <a href="/chat">Chat</a>
+
+</div>
+
+<h1>{% if session['usertype'] == 'donor' %}Feeders{% else %}Donors{% endif %}</h1>
+<div class="feeders-container">
+    {% if session['usertype'] == 'donor' %}
+        {% for feeder in feeders_data %}
+        <div class="feeder-box">
+            
+            <h2>{{ feeder[7] }}</h2>
+            <p>Animal Type: {{ feeder[1] }}</p>
+            <p>Rating: {{ feeder[2] }}</p>
+            <p>Total Animals Fed: {{ feeder[6] }}</p>
+            <p>Email: {{ feeder[8] }}</p>
+            <p>Phone: {{ feeder[9] }}</p>
+            <p>Address: {{ feeder[3] }}</p>
+            <a href="/chat">Chat</a>
+
+            <button onclick="getLocation('{{ feeder[4] }}', '{{ feeder[5] }}')">Get Location</button>
+       </div>
+        {% endfor %}
+    {% else %}
+        {% for donor in donors_data %}
+        <!-- Donor info -->
+        <div class="feeder-box">
+            
+            <h2>{{ donor[9] }}</h2>
+            <p>Animal Type: {{ donor[3] }}</p>
+            <p>Food Type: {{ donor[1] }}</p>
+            <p>Quantity: {{ donor[2] }}</p>
+            <p>Rating: {{ donor[4] }}</p>
+            <p>Total Donations: {{ donor[5] }}</p>
+            <p>Email: {{ donor[10] }}</p>
+            <p>Phone: {{ donor[11] }}</p>
+            <p>Address: {{ donor[6] }}</p>
+            <a href="/chat">Chat</a>
+            <button onclick="getLocation('{{ donor[7] }}', '{{ donor[8] }}')">Get Location</button>
+    
+
+       </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Notification modal -->
+<div id="notificationModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Someone has requested to chat with you. Do you want to join?</p>
+      <button onclick="joinChat()">Join Chat</button>
+    </div>
+  </div>
+  
+  <script>
+      // Get the modal
+      var modal = document.getElementById("notificationModal");
+  
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+  
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+  
+      // Function to show the notification modal
+      function showNotificationModal() {
+          modal.style.display = "block";
+      }
+  
+      // Function to join the chat room
+      function joinChat() {
+          window.location.href = "/chat";
+      }
+  
+      // Function to handle the notification logic
+      function handleNotification() {
+          // Check if there is a notification to show
+          // For example, if a user has requested to chat with the current user
+          // You can implement this logic based on your requirements and application flow
+          var notificationToShow = true; // Set this to true if there is a notification to show, otherwise false
+          
+          if (notificationToShow) {
+              showNotificationModal();
+          }
+      }
+  
+      // Call the function to handle notifications when the page loads
+      handleNotification();
+  
+
+
+    function getLocation(latitude, longitude) {
+        var userType = '{{ session["usertype"] }}'; // Retrieve user type from Flask session
+        
+        if (userType === 'donor') {
+            // Redirect to feeder location if the user is a donor
+            window.location.href = "/show_feeder_location?latitude=" + latitude + "&longitude=" + longitude;
+        } else {
+            // Redirect to donor location for other user types
+            window.location.href = "/show_donor_location?latitude=" + latitude + "&longitude=" + longitude;
+        }
+    }
+
+</script>
+
+</body>
+</html>
+    
+    

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADKYNNZfrZTU9fWeEASVwl7tTK6K1nxWU&callback=initMap" async defer></script>
+    <style>
+        #map {
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>{% if session['usertype'] == 'donor' %}Feeders Map{% else %}Donors Map{% endif %}</h1>
+
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: { lat: 19.0760, lng: 72.8777 } // Center the map on Mumbai
+            });
+    
+            // Get feeders data passed from Flask
+            var feeders = JSON.parse('{{ feeders | tojson | safe }}');
+
+            // Add markers for each feeder
+            feeders.forEach(feeder => {
+                if (feeder.latitude && feeder.longitude) {
+                    var marker = new google.maps.Marker({
+                        position: { lat: feeder.latitude, lng: feeder.longitude },
+                        map: map,
+                        title: feeder.name,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

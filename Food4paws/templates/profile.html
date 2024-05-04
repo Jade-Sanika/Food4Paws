@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #db826a; /* Changed background color to beige */
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #884A39;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #C38154;
+            color: black;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: white; /* Changed heading color to white */
+        }
+
+        .profile-info {
+            background-color: #4D3319; /* Dark brown background color */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+            color: white; /* White text color */
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+        }
+
+        .profile-info a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .profile-info a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="password"],
+        form input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #884A39;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #C38154;
+        }
+
+        /* Styles from provided CSS */
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            margin-right: auto;
+        }
+
+        .logo {
+            margin-right: right;
+        }
+
+        h5 {
+            font-size: 40px; /* Added "px" */
+            color: #F9E0BB;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #884A39;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background-color: #C38154;
+        }
+
+        .about {
+            padding: 50px 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-close {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="/home">Home</a>
+    <a href="/messages">Messages</a>
+    <a href="/map">Map</a>
+    <a href="/profile">Profile</a>
+</div>
+
+<h1>Profile</h1>
+<div class="profile-info">
+    <p>Username: {{ user_data[1] }}</p>
+    <p>Email: {{ user_data[4] }}</p>
+    <p>Phone: {{ user_data[5] }}</p>
+    <p>Location: {{ user_data[6] }}</p>
+    <!-- Add more information as needed -->
+</div>
+<form id="logout-form" action="/logout" method="post">
+    <input type="submit" value="Logout">
+</form>
+
+{% if session['usertype'] == 'donor' %}
+<h2>Enter Donation Details</h2>
+<form id="submit_donation" action="/submit_donation" method="post">
+
+    <label for="food_type">Food Type:</label>
+    <input type="text" id="food_type" name="food_type" required><br><br>
+
+    <label for="quantity">Quantity(in kgs):</label>
+    <input type="number" id="quantity" name="quantity" required><br><br>
+
+    <label for="animal_type">Animal Type:</label>
+    <input type="text" id="animal_type" name="animal_type" required><br><br>
+
+    <label for="rating">Rating:</label>
+    <input type="number" id="rating" name="rating" min="0" max="5" step="1" required><br><br>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" required><br><br>
+
+    <label for="latitude">Latitude:</label>
+    <input type="text" id="latitude" name="latitude" required><br><br>
+
+    <label for="longitude">Longitude:</label>
+    <input type="text" id="longitude" name="longitude" required><br><br>
+
+    <input type="hidden" id="donor_id" name="donor_id" value="{{ user_data[0] }}"> <!-- Assuming user_data[0] contains the DonorID -->
+    <input type="submit" value="Submit">
+</form>
+{% endif %}
+
+<!-- Popup -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <h2>Donation Submitted</h2>
+        <p>Your donation has been successfully submitted.</p>
+        <span class="popup-close" onclick="closePopup()">Close</span>
+    </div>
+</div>
+
+<script>
+    // Function to display popup
+    function showPopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "block";
+    }
+
+    // Function to close popup
+    function closePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+    }
+
+    // Submit form and display popup
+    document.getElementById("submit_donation").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        // You may add additional form submission logic here if needed
+        showPopup(); // Display the popup
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <style>
+        /* Style the navbar */
+        .navbar {
+            background-color: #884A39; /* Theme color */
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #fff; /* Text color */
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #C38154; /* Darker color on hover */
+            color: black;
+        }
+
+        /* Style the messages container */
+        .messages-container {
+            margin-top: 20px;
+        }
+
+        /* Style individual message boxes */
+        .message-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        /* Style message details */
+        .message-box p {
+            margin: 5px 0;
+        }
+
+        /* Style message headers */
+        .message-box p:first-child {
+            font-weight: bold;
+        }
+
+        /* Style message timestamp */
+        .message-box p:last-child {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/home">Home</a>
+        <a href="/messages">Messages</a>
+        <a href="/map">Map</a>
+        <a href="/profile">Profile</a>
+    </div>
+
+    <h1>Messages</h1>
+    <div class="messages-container">
+        {% for message in messages_data %}
+        <div class="message-box">
+            <p>From: {{ message[1] }}</p>
+            <p>To: {{ message[2] }}</p>
+            <p>Content: {{ message[3] }}</p>
+            <p>Timestamp: {{ message[4] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
